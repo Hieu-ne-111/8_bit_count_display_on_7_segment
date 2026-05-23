@@ -1,0 +1,25 @@
+module part1(SW, KEY0, HEX1, HEX2);
+	input wire [1:0]SW;
+	input wire KEY0;
+	output wire HEX1, HEX2;
+	
+	// Set up
+	reg [7:0] count = 8'b00000000;
+	wire enable, CLK, rst;
+	assign enable = SW[0];
+	assign CLK = KEY0;
+	assign rst = SW[1];
+	
+	always @(posedge CLK or posedge rst) begin
+		if(rst)
+			count = 8'b00000000;
+		else begin 
+			count[0] = count[0] ^ enable;
+			count[1] = count[1] ^ count[0] & enable;
+			count[2] = count[2] ^ count[1] & count[0] & enable;
+			count[3] = count[3] ^ count[2] & count[1] & count[0] & enable;
+			count[4] = count[4] ^ count[3] & count[2] & count[1] & count[0] & enable;
+			count[5] = count[5] ^ count[4] & count[3] & count[2] & count[1] & count[0] & enable;
+			count[6] = count[6] ^ count[5] & count[4] & count[3] & count[2] & count[1] & count[0] & enable;
+			count[7] = count[7] ^ count[6] & count[5] & count[4] & count[3] & count[2] & count[1] & count[0] & enable;
+endmodule 
