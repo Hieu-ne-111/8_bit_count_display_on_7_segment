@@ -1,0 +1,30 @@
+module clk_button(CLK_50, KEY0, LEDR);
+	input CLK_50;
+	input KEY0;
+	output [7:0]LEDR;
+	
+	reg clean_clk;
+	reg [19:0]delay_count;
+	always @(posedge CLK_50) begin
+		if(delay_count == 20'd1_000_000) begin
+			delay_count = 20'b0;
+			clean_clk = KEY0;
+		end else delay_count = delay_count+1'b1;
+	end
+	
+	reg reg_0, reg_1;
+	always @(posedge CLK_50) begin
+		reg_0 <= clean_clk;
+		reg_1 <= reg_0;
+	end
+	
+	wire count_try = !reg_0 & reg_1;
+	
+	reg [7:0] count;
+	always @(posedge CLK_50) begin
+		if(count_try) count = count + 1'b1;
+	end
+	
+	assign LEDR = count;
+	
+endmodule

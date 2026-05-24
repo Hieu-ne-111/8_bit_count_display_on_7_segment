@@ -1,0 +1,12 @@
+module part2(KEY0,LEDR);
+	input wire KEY0;
+	output wire [9:0] LEDR;
+	reg [9:0] register = 10'b0000000000;
+	
+	assign LEDR = register;
+	wire CLK;
+	assign CLK = KEY0;
+	
+	always @(posedge CLK) begin
+		register <= register +1;
+endmodule

@@ -1,0 +1,24 @@
+module part3(CLK_50, HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, KEY0);
+	input wire CLK_50;
+	output wire [7:0] HEXO, HEX1, HEX2, HEX3, HEX4, HEX5;
+	input wire KEY0;
+	
+	reg [23:0] Blink;
+	reg CLock= 1'b0;
+	always @(posedge CLK_50) begin
+		if(Blink == 24'd25_000_000) begin
+			Clock = ~Clock;
+			Blink = 24'b0;
+		end else	Blink = Blink +1'b1;
+	end
+	reg [7:0]X;
+	
+	always @(posedge CLK_50) begin
+		if(Clock) X = 8'b00000000;
+		else X = 8'b11111111;
+	end
+	assign HEX0 = X;
+	assign HEX1 = X;
+	assign HEX2 = X;
+
+endmodule
